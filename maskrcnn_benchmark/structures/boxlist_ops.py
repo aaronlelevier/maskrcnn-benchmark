@@ -27,12 +27,7 @@ def boxlist_nms(boxlist, nms_thresh, max_proposals=-1, score_field="scores"):
     keep = _box_nms(boxes, score, nms_thresh)
     if max_proposals > 0:
         keep = keep[: max_proposals]
-    if 0:
-        boxlist = boxlist[keep]
-    else:
-        boxlist.bbox = boxlist.bbox[keep]
-        for f in boxlist.fields():
-            boxlist.add_field(f, boxlist.get_field(f)[keep])
+    boxlist = boxlist[keep]
     return boxlist.convert(mode)
 
 
@@ -50,13 +45,7 @@ def remove_small_boxes(boxlist, min_size):
     keep = (
         (ws >= min_size) & (hs >= min_size)
     ).nonzero().squeeze(1)
-    if 0:
-        boxlist = boxlist[keep]
-    else:
-        boxlist.bbox = boxlist.bbox[keep]
-        for f in boxlist.fields():
-            boxlist.add_field(f, boxlist.get_field(f)[keep])
-    return boxlist
+    return boxlist[keep]
 
 
 # implementation from https://github.com/kuangliu/torchcv/blob/master/torchcv/utils/box.py
@@ -77,10 +66,10 @@ def boxlist_iou(boxlist1, boxlist2):
     """
     if boxlist1.size != boxlist2.size:
         raise RuntimeError(
-                "boxlists should have same image size, got {}, {}".format(boxlist1, boxlist2))
+            "boxlists should have same image size, got {}, {}".format(boxlist1, boxlist2))
 
-    N = len(boxlist1)
-    M = len(boxlist2)
+    # N = len(boxlist1)
+    # M = len(boxlist2)
 
     area1 = boxlist1.area()
     area2 = boxlist2.area()

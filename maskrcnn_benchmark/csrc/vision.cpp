@@ -1,13 +1,10 @@
 // Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
-#include <torch/script.h>
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/opencv.hpp>
-
+#include "torch/extension.h"
 #include "nms.h"
 #include "ROIAlign.h"
 #include "ROIPool.h"
 #include "SigmoidFocalLoss.h"
+
 
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
   m.def("nms", &nms, "non-maximum suppression");

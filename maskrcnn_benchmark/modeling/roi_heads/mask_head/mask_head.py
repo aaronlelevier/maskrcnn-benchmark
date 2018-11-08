@@ -1,6 +1,5 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 import torch
-from torch import nn
 
 from maskrcnn_benchmark.structures.bounding_box import BoxList
 
@@ -23,7 +22,7 @@ def keep_only_positive_boxes(boxes):
     assert boxes[0].has_field("labels")
     positive_boxes = []
     positive_inds = []
-    num_boxes = 0
+    # num_boxes = 0
     for boxes_per_image in boxes:
         labels = boxes_per_image.get_field("labels")
         inds_mask = labels > 0
@@ -66,13 +65,11 @@ class ROIMaskHead(torch.nn.Module):
             x = features
             x = x[torch.cat(positive_inds, dim=0)]
         else:
-            # evil trick around jit not liking boxlist
-            x = self.feature_extractor.forward(features, proposals)
+            x = self.feature_extractor(features, proposals)
         mask_logits = self.predictor(x)
 
         if not self.training:
-            # evil trick around jit not liking boxlist
-            result = self.post_processor.forward(mask_logits, proposals)
+            result = self.post_processor(mask_logits, proposals)
             return x, result, {}
 
         loss_mask = self.loss_evaluator(proposals, mask_logits, targets)

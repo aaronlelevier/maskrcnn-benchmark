@@ -6,9 +6,11 @@ import torch.nn.functional as F
 
 from maskrcnn_benchmark.structures.bounding_box import BoxList
 
+
 @torch.jit.script
 def arange_like(x):
     return torch.arange(x.size(0), device=x.device, dtype=torch.long)
+
 
 # TODO check if want to return a single BoxList or a composite
 # object

@@ -40,8 +40,7 @@ class ResNet50Conv5ROIFeatureExtractor(nn.Module):
         self.head = head
 
     def forward(self, x, proposals):
-        # evil call of .forward to fool tracer
-        x = self.pooler.forward(x, proposals)
+        x = self.pooler(x, proposals)
         x = self.head(x)
         return x
 
@@ -71,7 +70,7 @@ class FPN2MLPFeatureExtractor(nn.Module):
         self.fc7 = make_fc(representation_size, representation_size, use_gn)
 
     def forward(self, x, proposals):
-        x = self.pooler.forward(x, proposals)
+        x = self.pooler(x, proposals)
         x = x.view(x.size(0), -1)
 
         x = F.relu(self.fc6(x))
