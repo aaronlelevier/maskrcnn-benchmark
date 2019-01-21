@@ -1,0 +1,13 @@
+requests
+matplotlib
+pillow
+jupyter
+notebook
+numpy
+yacs
+cython
+ninja
+torch
+torchvision
+opencv-python
+pycocotools
